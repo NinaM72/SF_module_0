@@ -1,0 +1,35 @@
+#Создание проекта игры по угадыванию числа от 1 до 100
+import numpy as np
+
+def NinasGame(number):
+        
+    count = 0                                              # счетчик попыток
+    number = np.random.randint(1,101)                      # загадали число
+    
+    while True:                                            # бесконечный цикл
+        low = 1                                            # определение наименьшего числа диапазона поиска
+        high = 100                                         # определение наибольшего числа диапазона поиска
+        guess = 50                                         # сокращение диапазона поиска вдвое
+        while guess != number:          
+            count+=1                                       # учет попытки угадывания
+            guess = (low+high)//2                          # сокращение диапазона поиска вдвое с учетом сделанной попытки
+            if guess > number:                             # предполагаемое число больше загаданного числа
+                high = guess                               # сужение верхнего диапазона
+            elif guess < number:                           # предполагаемое число меньше загаданного числа
+                low = guess+1                              # сужение нижнего диапазона
+        return (count)                                     # возврат итогового значения количества попыток угадывания
+        break                                              # прерывание цикла 
+    else: 
+        computer_guess(number)
+    NinasGame(number)
+
+def game_score (NinasGame):                                # Статистика среднего кол-ва попыток нужных для угадывания числа
+    count_ls = []                                          # Создание счетчика
+    np.random.seed(1)                                      # фиксируем RANDOM SEED, чтобы эксперимент был воспроизведен 1000 раз
+    random_array = np.random.randint(1,101, size=(1000))
+    for number in random_array:
+        count_ls.append(NinasGame(number))                 # заполняем массив данными, полученными по каждому эксперименту
+    score = int(np.mean(count_ls))                         # расчет среднего значения массива (с округлением до целого)
+    return(f"Ваш алгоритм угадывает число в среднем за {score} попыток") 
+    
+game_score (NinasGame)
